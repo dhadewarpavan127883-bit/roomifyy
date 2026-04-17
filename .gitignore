@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+client/node_modules/
+api/node_modules/
+
+# Build
+client/dist/
+
+# Environment
+.env
+api/.env
+client/.env
+
+# Local development
+.vercel
+.vscode/
+.DS_Store
+*.log
+npm-debug.log*
+
+# OS Files
+Thumbs.db
+Desktop.ini
