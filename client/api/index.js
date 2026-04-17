@@ -1,8 +1,10 @@
-const express = require('express');
-const cors = require('cors');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const dotenv = require('dotenv');
+import express from 'express';
+import cors from 'cors';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 dotenv.config();
 const app = express();
@@ -90,7 +92,7 @@ app.post('/api/auth/login', async (req, res) => {
 
 // --- ROOM ROUTES ---
 app.get('/api/rooms', (req, res) => {
-  const { query } = req.query; // Changed parameter name to generic 'query'
+  const { query } = req.query;
   if (query) {
     const searchTerm = query.toLowerCase();
     const filtered = rooms.filter(r => 
@@ -104,16 +106,18 @@ app.get('/api/rooms', (req, res) => {
 });
 
 app.post('/api/rooms', (req, res) => {
-  // Simple auth check could be added here
   const newRoom = { id: rooms.length + 1, ...req.body };
   rooms.push(newRoom);
   res.status(201).json(newRoom);
 });
 
 // --- EXPORT FOR VERCEL ---
-module.exports = app;
+export default app;
 
-if (require.main === module) {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+if (process.argv[1] === __filename) {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }
